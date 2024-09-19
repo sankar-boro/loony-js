@@ -1,7 +1,7 @@
 {
   "name": "loony-wallet",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "license": "MIT",
   "dependencies": {
     "@coral-xyz/anchor": "^0.29.0",

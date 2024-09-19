@@ -20,8 +20,9 @@
     "typescript": "^5.6.2"
   },
   "scripts": {
-    "start": "node ./index.js",
-    "tsc:compile": "tsc --build tsconfig.base.json",
-    "esbuild:compile": "node ./build.js"
+    "startCompiled": "node ./build/index.js",
+    "startBundled": "node ./build/bundle.js",
+    "tsToJsCompile": "tsc --build tsconfig.base.json",
+    "bundleTsToJs": "node ./build.js"
   }
 }
