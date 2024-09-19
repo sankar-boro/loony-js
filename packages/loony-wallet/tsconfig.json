@@ -3,7 +3,7 @@
   "compilerOptions": {
     "typeRoots": ["../../node_modules/@types"],
     "target": "ESNext",
-    "module": "CommonJS",
+    "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -11,6 +11,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "outDir": "../../build"
+    "outDir": "../../build",
+    "allowSyntheticDefaultImports": true
   }
 }

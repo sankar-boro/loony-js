@@ -2,7 +2,7 @@
     "compilerOptions": {
       "typeRoots": ["./node_modules/@types"],
       "target": "ESNext",
-      "module": "CommonJS",
+      "module": "commonjs",
       "strict": true,
       "esModuleInterop": true,
       "skipLibCheck": true,
@@ -12,6 +12,7 @@
       "removeComments": true,
       "baseUrl": ".",
       "outDir": "./build",
+      "allowSyntheticDefaultImports": true,
       "paths": {
         "@loony-cl/*": ["packages/loony-cl/src/*"],
         "@loony-stocks/*": ["packages/loony-stocks/src/*"],
