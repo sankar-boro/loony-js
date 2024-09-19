@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "typeRoots": ["./node_modules/@types"],
+      "target": "ESNext",
+      "module": "CommonJS",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "removeComments": true,
+      "baseUrl": ".",
+      "outDir": "./build",
+      "paths": {
+        "@loony-cl/*": ["packages/loony-cl/src/*"],
+        "@loony-stocks/*": ["packages/loony-stocks/src/*"],
+        "@loony-wallet/*": ["packages/loony-wallet/src/*"]
+      }
+    }
+  }
+  

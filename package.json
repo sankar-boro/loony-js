@@ -1,0 +1,27 @@
+{
+  "name": "loony-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "loony-cl": "workspace:^1.0.0",
+    "loony-stocks": "workspace:^1.0.0",
+    "loony-wallet": "workspace:^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.5",
+    "esbuild": "^0.23.1",
+    "typescript": "^5.6.2"
+  },
+  "scripts": {
+    "start": "node ./index.js",
+    "tsc:compile": "tsc --build tsconfig.base.json",
+    "esbuild:compile": "node ./build.js"
+  }
+}
