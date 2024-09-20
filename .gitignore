@@ -23,6 +23,7 @@ yarn.lock
 dist/
 build/
 out/
+.data
 
 # Config
 config/

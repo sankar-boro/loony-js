@@ -1,15 +1,10 @@
 /**
  * @loony_nodejs
  */
-import { ProcessHandler } from './node';
-import { LoonyCl } from './packages/loony-cl/index';
+import { simpleMovingAverage } from 'loony-stocks/algo';
+import jsonData from './.data/rba.json'
 
 (async () => {
-  const node = new ProcessHandler();
-  node.setArgs(process.argv);
-
-  const Cl = new LoonyCl();
-  Cl.setOptions(node.options);
-  const res = Cl.run();
-  console.log(res);
+  let res = simpleMovingAverage(jsonData.candles, 6)
+  console.log(res)
 })();
