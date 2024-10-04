@@ -1,10 +1,10 @@
 /**
  * @loony_nodejs
  */
-import { simpleMovingAverage } from 'loony-stocks/algo';
-import jsonData from './.data/rba.json'
+import { exponentialMovingAverage } from 'loony-stocks/algo.ts';
+import jsonData from './.data/rba.json' with { type: "json" };
 
 (async () => {
-  let res = simpleMovingAverage(jsonData.candles, 6)
+  let res = exponentialMovingAverage(jsonData.candles, 5)
   console.log(res)
 })();

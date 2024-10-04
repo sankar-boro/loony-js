@@ -1,5 +1,5 @@
 import {
-  generateKeypairFromMnemonic as generateKeypairFromMnemonic__,
+  generateKeypairFromMnemonic,
   createHash,
 } from './src/generate';
 
@@ -15,9 +15,9 @@ class LoonyWallet {
   }
 
   generateKeypairFromMnemonic() {
-    const name = this.options.name;
+    const {name, password} = this.options
     const mnemonicName = createHash(name);
-    generateKeypairFromMnemonic__(mnemonicName, "m/44'/501'/0'/0'", name);
+    generateKeypairFromMnemonic(mnemonicName, "m/44'/501'/0'/0'", name, password);
   }
 }
 

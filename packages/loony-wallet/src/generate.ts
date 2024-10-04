@@ -3,7 +3,6 @@ import { derivePath } from 'ed25519-hd-key';
 import nacl from 'tweetnacl';
 import { Keypair } from '@solana/web3.js';
 import crypto from 'crypto';
-// import configData from '../../../config/solana.development.json';
 
 export const logCredentials = (mnemonic: string, solanaKeypair: Keypair, name: string) => {
   console.log(`Mnemonic Phrase (${name}):`, mnemonic);
@@ -26,6 +25,7 @@ export const generateKeypairFromMnemonic = async (
   mnemonic: string,
   derivationPath = "m/44'/501'/0'/0'",
   name: string,
+  password: string,
 ) => {
   try {
     // Validate and normalize the mnemonic
@@ -34,7 +34,7 @@ export const generateKeypairFromMnemonic = async (
     }
 
     // Convert the mnemonic to a seed
-    const seed = await bip39.mnemonicToSeed(mnemonic);
+    const seed = await bip39.mnemonicToSeedSync(mnemonic, password);
 
     // Derive the keypair using the seed and a derivation path
     const { key } = derivePath(derivationPath, seed.toString('hex'));
