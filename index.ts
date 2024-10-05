@@ -1,8 +1,9 @@
 /**
  * @loony_nodejs
  */
-import { App } from 'loony-deno';
+import { App, getAppConfig } from 'loony-deno';
 
 (async () => {
-  await App()
+  const config = getAppConfig();
+  await App(config)
 })();

@@ -1,9 +1,11 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.0/mod.ts";
-import { pgClient } from './db.ts'
+import { getPostgresClient } from './db.ts'
+import { getAppConfig, Config } from './init.ts'
 
-async function App() {
+async function App(config: Config) {
   const app = new Application();
   const router = new Router();
+  const pgClient = await getPostgresClient(config.postgres);
   router
     .get("/", (context) => {
       context.response.body = "Welcome to the home page!";
@@ -21,4 +23,4 @@ async function App() {
   await app.listen({ port: 8000 });
 }
 
-export { App }
+export { App, getAppConfig }
