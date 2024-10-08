@@ -2,7 +2,6 @@ import { Client, ClientOptions } from "https://deno.land/x/postgres@v0.19.3/mod.
 import "jsr:@std/dotenv/load";
 
 async function getPostgresClient(config: ClientOptions) {
-    console.log(config)
     const pgClient = new Client(config);
     await pgClient.connect()
     return pgClient

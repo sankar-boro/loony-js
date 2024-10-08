@@ -1,43 +1,128 @@
-const puppeteer = require('puppeteer');
-const url = 'https://www.etmoney.com/stocks/list-of-stocks';
+class Node {
+    nodeName: string;
+    children: Node[] = [];
+    textContent: string | null = null;
 
-(async () => {
-  // Launch a headless browser
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+    constructor(nodeName: string) {
+        this.nodeName = nodeName;
+    }
+}
 
-  // Go to the website
-  await page.goto(url, { waitUntil: 'networkidle2' });
+class Element extends Node {
+    attributes: Record<string, string> = {};
 
-  const pages = await page.evaluate(() => {
-    const table_body_elements = document.querySelectorAll('tbody');
-    return Array.from(table_body_elements).map(table_body_element => {
-        const table_row_elements = table_body_element.querySelectorAll('tr');
-        return Array.from(table_row_elements).map(table_row_element => {
-            const table_data_elements = table_row_element.querySelectorAll('td');
-            return Array.from(table_data_elements).map(table_data_element => table_data_element.textContent);   
-        })
-    });
-  });
+    constructor(nodeName: string, attributes: Record<string, string>) {
+        super(nodeName);
+        this.attributes = attributes;
+    }
+}
 
+class TextNode extends Node {
+    constructor(text: string) {
+        super("#text");
+        this.textContent = text;
+    }
+}
 
-    // Simulate click on 'Show More' button to load more content
-    const showMoreButtonSelector = '.show-more-button'; // Update with actual selector
-    try {
-    await page.waitForSelector(showMoreButtonSelector);
-    await page.click(showMoreButtonSelector);
+function tokenize(html: string): string[] {
+    const tokens: string[] = [];
+    const regex = /<\/?([a-zA-Z1-6]+)([^>]*)>|([^<]+)/g;
+    let match;
 
-    // Wait for new content to load
-    await page.waitForTimeout(5000); // Adjust this based on how long the page needs to load more data
-    
-    } catch (err) {
-        console.error('Error clicking Show More button or selector not found:', err);
+    while ((match = regex.exec(html)) !== null) {
+        if (match[0][0] === "<") {
+            // If it's a tag (either opening or closing)
+            tokens.push(match[0]);
+        } else if (match[3]) {
+            // Text content
+            tokens.push(match[3].trim());
+        }
     }
 
-  // Close the browser
-  await browser.close();
+    return tokens.filter((x) => x !== "");
+}
 
-  console.log(pages)
-})()
+function parseAttributes(attrString: string): Record<string, string> {
+    const attributes: Record<string, string> = {};
+    const attrRegex = /([a-zA-Z-]+)="([^"]*)"/g;
+    let match;
+    while ((match = attrRegex.exec(attrString)) !== null) {
+        attributes[match[1]] = match[2];
+    }
+    return attributes;
+}
 
+function parseFromString(html: string): Node {
+    const tokens = tokenize(html);
+    const root = new Node("document");
+    const stack: Node[] = [root];
 
+    for (const token of tokens) {
+        if (token.startsWith("</")) {
+            // Closing tag, pop the stack
+            stack.pop();
+        } else if (token.startsWith("<")) {
+            // Opening tag
+            const tagNameMatch = token.match(/<([a-zA-Z1-6]+)/);
+            const tagName = tagNameMatch ? tagNameMatch[1] : "";
+            const attributes = parseAttributes(token);
+            const element = new Element(tagName, attributes);
+            const parent = stack[stack.length - 1];
+            parent.children.push(element);
+            stack.push(element);
+        } else if (token) {
+            // Text node
+            const textNode = new TextNode(token);
+            const parent = stack[stack.length - 1];
+            parent.children.push(textNode);
+        }
+    }
+
+    return root;
+}
+
+function matchesSelector(element: Element, selector: string): boolean {
+    // Basic support for class selectors
+    if (selector.startsWith(".")) {
+        const className = selector.substring(1);
+        return element.attributes.class &&
+            element.attributes.class.includes(className);
+    }
+
+    // Basic support for tag selectors
+    return element.nodeName === selector;
+}
+
+function querySelector(root: Node, selector: string): Element | null {
+    if (root instanceof Element && matchesSelector(root, selector)) {
+        return root;
+    }
+
+    for (const child of root.children) {
+        const found = querySelector(child, selector);
+        if (found) return found;
+    }
+
+    return null;
+}
+
+// HTML string to parse
+const html = `
+  <html>
+    <body>
+      <div class="header">Hello, Deno!</div>
+      <p>This is a custom HTML parser.</p>
+    </body>
+  </html>
+`;
+
+// Parse the HTML string
+const document = parseFromString(html);
+
+// Use querySelector to find elements
+const header = querySelector(document, ".header");
+const paragraph = querySelector(document, "p");
+
+console.log("Document:", document);
+console.log("Header content:", header?.children[0].textContent);
+console.log("Paragraph content:", paragraph?.children[0].textContent);

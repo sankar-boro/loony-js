@@ -1,0 +1,8 @@
+{
+    "imports": {
+        "jsdom": "npm:jsdom@^25.0.1"
+    },
+    "tasks": {
+        "start": "deno run --allow-net --allow-read main.ts"
+    }
+}

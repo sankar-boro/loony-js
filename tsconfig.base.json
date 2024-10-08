@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
       "typeRoots": ["./node_modules/@types"],
+      "lib": ["DOM", "ESNext"],
       "target": "ESNext",
       "module": "commonjs",
       "strict": true,
