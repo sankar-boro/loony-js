@@ -52,12 +52,24 @@ function parseAttributes(attrString: string): Record<string, string> {
     return attributes;
 }
 
-function parseFromString(html: string): Node {
+function parseFromString(html: string, skipTags: string[] = []): Node {
     const tokens = tokenize(html);
     const root = new Node("document");
     const stack: Node[] = [root];
+    let skipTagStack: string | null = null; // To track skipping nested tags
 
     for (const token of tokens) {
+        if (skipTagStack && token.startsWith(`</${skipTagStack}`)) {
+            // Found the closing tag of the currently skipped tag
+            skipTagStack = null; // Stop skipping
+            continue;
+        }
+
+        if (skipTagStack) {
+            // We're in a skipped tag (like <script> or <head>), so skip everything
+            continue;
+        }
+
         if (token.startsWith("</")) {
             // Closing tag, pop the stack
             stack.pop();
@@ -65,6 +77,12 @@ function parseFromString(html: string): Node {
             // Opening tag
             const tagNameMatch = token.match(/<([a-zA-Z1-6]+)/);
             const tagName = tagNameMatch ? tagNameMatch[1] : "";
+
+            if (skipTags.includes(tagName)) {
+                skipTagStack = tagName; // Start skipping this tag
+                continue;
+            }
+
             const attributes = parseAttributes(token);
             const element = new Element(tagName, attributes);
             const parent = stack[stack.length - 1];
@@ -85,8 +103,12 @@ function matchesSelector(element: Element, selector: string): boolean {
     // Basic support for class selectors
     if (selector.startsWith(".")) {
         const className = selector.substring(1);
-        return element.attributes.class &&
-            element.attributes.class.includes(className);
+        if (
+            element.attributes.class &&
+            element.attributes.class.includes(className)
+        ) {
+            return true;
+        }
     }
 
     // Basic support for tag selectors
@@ -106,23 +128,17 @@ function querySelector(root: Node, selector: string): Element | null {
     return null;
 }
 
-// HTML string to parse
-const html = `
-  <html>
-    <body>
-      <div class="header">Hello, Deno!</div>
-      <p>This is a custom HTML parser.</p>
-    </body>
-  </html>
-`;
+const filePath = "/home/sankar/projects/loony-js/etmoney.html";
+const content = Deno.readTextFileSync(filePath);
+// const content = `
+//     <div>
+//       <h1>Hello, World!</h1>
+//     </div>
+//     <div>
+//       <p>This is a paragraph.</p>
+//     </div>
+// `;
 
 // Parse the HTML string
-const document = parseFromString(html);
-
-// Use querySelector to find elements
-const header = querySelector(document, ".header");
-const paragraph = querySelector(document, "p");
-
-console.log("Document:", document);
-console.log("Header content:", header?.children[0].textContent);
-console.log("Paragraph content:", paragraph?.children[0].textContent);
+const document = parseFromString(content, ["script", "head", "header"]);
+console.log(JSON.stringify(document));

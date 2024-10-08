@@ -1,3 +1,4 @@
 {
-    "workspace": ["./packages/loony-stocks"]
+    "workspace": ["./packages/loony-stocks"],
+    "nodeModulesDir": "auto"
 }
