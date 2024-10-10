@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [socket, setSocket] = useState<WebSocket>(null);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
   const [message, setMessage] = useState("");
-  const [receivedMessages, setReceivedMessages] = useState([]);
+  const [receivedMessages, setReceivedMessages] = useState<any[]>([]);
   const [count, setCount] = useState(0);
   useEffect(() => {
     // Create WebSocket connection
@@ -41,7 +41,7 @@ function App() {
       App
       <button
         onClick={() => {
-          socket && socket.send("message", { data: "hello" });
+          socket && socket.send(JSON.stringify({ data: "hello" }));
         }}
       >
         Click

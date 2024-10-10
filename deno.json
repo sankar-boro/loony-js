@@ -1,4 +1,27 @@
 {
     "workspace": ["./packages/loony-stocks"],
-    "nodeModulesDir": "auto"
+    "nodeModulesDir": "auto",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "jsxImportSource": "react"
+    },
+    "tasks": {
+        "start": "deno run --allow-net --allow-read --allow-env --allow-write --watch src/main.tsx",
+        "dev": "deno run --allow-net --allow-read --allow-env --allow-write --watch src/main.tsx"
+    },
+    "importMap": "./import_map.json",
+    "lint": {
+        "rules": {
+            "tags": ["recommended"]
+        }
+    },
+    "fmt": {
+        "files": {
+            "include": ["src"]
+        },
+        "options": {
+            "useTabs": false,
+            "lineWidth": 80
+        }
+    }
 }

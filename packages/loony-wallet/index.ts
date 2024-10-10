@@ -1,11 +1,8 @@
-import {
-  generateKeypairFromMnemonic,
-  createHash,
-} from './src/generate';
+import { createHash, generateKeypairFromMnemonic } from "./src/generate.ts";
 
 type Options = {
-  [key: string]: string,
-}
+  [key: string]: string;
+};
 
 class LoonyWallet {
   options: Options = {};
@@ -15,9 +12,14 @@ class LoonyWallet {
   }
 
   generateKeypairFromMnemonic() {
-    const {name, password} = this.options
+    const { name, password } = this.options;
     const mnemonicName = createHash(name);
-    generateKeypairFromMnemonic(mnemonicName, "m/44'/501'/0'/0'", name, password);
+    generateKeypairFromMnemonic(
+      mnemonicName,
+      "m/44'/501'/0'/0'",
+      name,
+      password,
+    );
   }
 }
 

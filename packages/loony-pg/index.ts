@@ -1,5 +1,5 @@
-import express from 'express';
-import { pg_pool } from './db'
+import express, { Request, Response } from "npm:express";
+import { pg_pool } from "./db.ts";
 
 const app = express();
 const port = 3000;
@@ -7,16 +7,16 @@ const port = 3000;
 // Middleware to parse JSON requests
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get("/", (_req: Request, res: Response) => {
+  res.send("Hello World!");
 });
-app.get('/users', async (req, res) => {
+app.get("/users", async (_req: Request, res: Response) => {
   try {
-    const result = await pg_pool.query('SELECT * FROM users');
+    const result = await pg_pool.query("SELECT * FROM users");
     res.json(result.rows);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error((err as Error).message);
+    res.status(500).send("Server Error");
   }
 });
 
