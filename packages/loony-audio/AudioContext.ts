@@ -1,4 +1,5 @@
-import { convertFloat32ToInt16 } from './encoder/wav'
+import { convertFloat32ToInt16, encodeWAV } from './encoder/wav'
+
 export default class WebAudioApi {
     
     micStream: MediaStream;
@@ -55,6 +56,14 @@ export default class WebAudioApi {
             this.audioContext.close()
             this.audioWorkletNode.port.postMessage({ command: 'stop' });
         }
+    }
+
+    getAudioUrl() {
+        const audioBlob = new Blob([encodeWAV(this.buffer as Float32Array[], 44100)], {
+            type: 'audio/wav',
+        });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        return audioUrl
     }
 }
 

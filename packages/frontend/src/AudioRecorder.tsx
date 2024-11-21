@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useWebSocket } from 'loony-audio/useWebSocket';
-import WebAudioApi from 'loony-audio/index';
-import { encodeWAV } from 'loony-audio/encoder/wav';
+import WebAudioApi from 'loony-audio/MediaRecorder';
 import "./Audio.css"
 
 function App() {
@@ -36,12 +35,9 @@ function App() {
     audioRef.current?.socketConnect(socket.current as WebSocket);
   };
 
-  const logData = async () => {
-    const audioBlob = new Blob([encodeWAV(audioRef.current?.buffer as Float32Array[], 44100)], {
-      type: 'audio/wav',
-    });
-    const audioUrl = URL.createObjectURL(audioBlob);
-    setAudioUrl(audioUrl);
+  const logData = () => {
+    let audioUrl = audioRef.current?.getAudioUrl();
+    setAudioUrl(audioUrl as string);
   };
 
   const handleFileChange = (_: React.ChangeEvent<HTMLInputElement>) => {};
