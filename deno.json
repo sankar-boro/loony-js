@@ -1,13 +1,13 @@
 {
-    "workspace": ["./packages/loony-stocks"],
+    "workspace": [
+        "./packages/loony-stocks",
+        "./packages/frontend",
+        "./packages/loony-cl"
+    ],
     "nodeModulesDir": "auto",
     "compilerOptions": {
         "jsx": "react-jsx",
         "jsxImportSource": "react"
-    },
-    "tasks": {
-        "start": "deno run --allow-net --allow-read --allow-env --allow-write --watch src/main.tsx",
-        "dev": "deno run --allow-net --allow-read --allow-env --allow-write --watch src/main.tsx"
     },
     "importMap": "./import_map.json",
     "lint": {

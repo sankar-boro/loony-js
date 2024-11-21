@@ -8,7 +8,7 @@ function App() {
   const [count, setCount] = useState(0);
   useEffect(() => {
     // Create WebSocket connection
-    const ws = new WebSocket("ws://localhost:8000/ws"); // Replace with your WebSocket URL
+    const ws = new WebSocket("ws://localhost:5000/ws"); // Replace with your WebSocket URL
 
     // Set the WebSocket instance
     setSocket(ws);
@@ -33,7 +33,8 @@ function App() {
     ws.onclose = () => {
       console.log("WebSocket connection closed");
     };
-    console.log(ws);
+
+    console.log(ws)
   }, []);
 
   return (
