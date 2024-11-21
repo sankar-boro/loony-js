@@ -15,6 +15,7 @@
     "loony-pg": "workspace:^1.0.0",
     "loony-stocks": "workspace:^1.0.0",
     "loony-wallet": "workspace:^1.0.0",
+    "loony-audio": "workspace:^1.0.0",
     "pg": "^8.13.0"
   },
   "devDependencies": {

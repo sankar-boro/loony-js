@@ -18,6 +18,7 @@
       "@loony-cl/*": ["packages/loony-cl/src/*"],
       "@loony-stocks/*": ["packages/loony-stocks/src/*"],
       "@loony-wallet/*": ["packages/loony-wallet/src/*"],
+      "@loony-audio/*": ["packages/loony-audio/src/*"],
       "frontend/*": ["packages/frontend/src/*"]
     }
   }
