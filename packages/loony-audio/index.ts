@@ -1,6 +1,5 @@
 import { convertFloat32ToInt16 } from './encoder/wav'
 export default class WebAudioApi {
-    
     micStream: MediaStream;
     audioContext: AudioContext;
     mediaStreamAudioSourceNode: undefined | MediaStreamAudioSourceNode;
