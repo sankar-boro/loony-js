@@ -22,10 +22,11 @@ export class ImplsAudioContext implements LoonyWebAudioApi {
         const micStream = await navigator.mediaDevices.getUserMedia({ audio: { sampleRate: 16000, channelCount: 1 }, video: false });
 
         const audioContext = new AudioContext();
-
+        const blob = new Blob([preProcessor], { type: 'application/javascript' });
+        const moduleURL = URL.createObjectURL(blob);
         await audioContext
             .audioWorklet
-            .addModule("LoonyAudioWorkletProcessor.js");
+            .addModule(moduleURL);
 
         return new ImplsAudioContext(micStream, audioContext);
     }
@@ -67,3 +68,18 @@ export class ImplsAudioContext implements LoonyWebAudioApi {
         return audioUrl
     }
 }
+
+const preProcessor = `class LoonyAudioWorkletProcessor extends AudioWorkletProcessor {
+    process(inputs, outputs, parameters) {
+      const input = inputs[0];
+      if (input.length > 0) {
+        const channelData = input[0];
+        if (channelData) {
+          this.port.postMessage(channelData);
+        }
+      }
+      return true;
+    }
+}
+  
+registerProcessor('LoonyAudioWorkletProcessor', LoonyAudioWorkletProcessor);`
