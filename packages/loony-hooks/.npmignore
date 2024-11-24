@@ -1,6 +1,7 @@
 # Ignore source code
-src/
 index.ts
+src/
+scripts/
 
 # Ignore package.json explicitly if needed (not typical)
 package.json
