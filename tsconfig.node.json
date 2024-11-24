@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "lib": ["ESNext"],
+      "module": "ESNext",
+      "skipLibCheck": true,
+  
+      /* Bundler mode */
+      "moduleResolution": "bundler",
+      "allowImportingTsExtensions": true,
+      "isolatedModules": true,
+      "moduleDetection": "force",
+      "noEmit": true,
+  
+      /* Linting */
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true,
+      "paths": {
+        "loony-hooks": [ "packages/loony-hooks/src"],
+        "loony-hooks/*": [ "packages/loony-hooks/src*"],
+        "loony-web-audio": [ "packages/loony-web-audio/src"],
+        "loony-web-audio/*": [ "packages/loony-web-audio/src/*"]
+      },
+      "baseUrl": "src",
+    },
+    "include": ["vite.config.ts"]
+}
+  
